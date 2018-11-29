@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "b1JkX4DxlIGicczx4be7BFhHQAM=",
+			"path": "github.com/briandowns/openweathermap",
+			"revision": "5f41b7c9d92de5d74bf32f4486375c7547bc8a3c",
+			"revisionTime": "2018-08-04T15:59:45Z"
+		}
+	],
+	"rootPath": "Coffeeify"
+}

@@ -5,9 +5,33 @@ import (
     repos "Coffeeify/repos"
     "fmt"
     "github.com/gorilla/securecookie"
-
+    "html/template"
     "net/http"
+    _"github.com/go-sql-driver/mysql"
+	"database/sql"
 )
+
+
+func dbConn() (db *sql.DB) {
+    dbDriver := "mysql"
+    dbUser := "root"
+    dbPass := "password@tcp(localhost:8000)"
+    dbName := "coffee_db"
+	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"/"+dbName)
+    if err != nil {
+        panic(err.Error())
+    }
+	return db
+}
+
+type drink struct{
+	Id int
+	Name string
+	Recepie string
+	Weather bool
+}
+
+var tmpl=template.Must(template.ParseGlob("templates/*"))
 
 var cookieHandler = securecookie.New(
     securecookie.GenerateRandomKey(64),
@@ -126,3 +150,91 @@ func GetUserName(request *http.Request) (userName string) {
     }
     return userName
 }
+
+
+///////////////////////////////////////////////////
+
+
+func SelcetAllDrinks(w http.ResponseWriter, r *http.Request){
+	db :=dbConn()
+	selDB, err := db.Query("SELECT * FROM coffee ORDER BY id DESC")
+    if err != nil {
+        panic(err.Error())
+	}
+	currentDrink := drink{}
+	allDrinks := []drink{}
+
+	for selDB.Next() {
+        var Id int
+		var Name, Recepie string
+		var Weather bool
+        err = selDB.Scan(&Id,&Name, &Recepie,&Weather)
+	
+		if err != nil {
+            panic(err.Error())
+		}
+		
+		currentDrink.Id=Id
+		currentDrink.Name = Name
+		currentDrink.Recepie= Recepie
+		currentDrink.Weather=Weather
+		allDrinks =append(allDrinks,currentDrink)
+	}
+	
+	tmpl.ExecuteTemplate(w, "Index", allDrinks)
+	defer db.Close()
+}
+
+func DisplayRecepie(w http.ResponseWriter, r *http.Request){
+	db := dbConn()
+	rowID := r.URL.Query().Get("id")
+	selDB,err:=db.Query("SELECT * FROM coffee WHERE Id=?",rowID)
+	if err != nil {
+        panic(err.Error())
+	}
+	drink := drink{}
+
+	for selDB.Next(){
+		var Id int
+		var Name, Recepie string
+		var Weather bool
+        err = selDB.Scan(&Id,&Name, &Recepie,&Weather)
+		if err != nil {
+            panic(err.Error())
+		}
+
+        drink.Name = Name
+		drink.Recepie = Recepie
+	}
+
+	tmpl.ExecuteTemplate(w,"Show", drink)
+    defer db.Close()
+}
+
+
+func New(w http.ResponseWriter, r *http.Request) {
+    tmpl.ExecuteTemplate(w, "New", nil)
+}
+
+func InsertDrinks(w http.ResponseWriter, r *http.Request){
+	db :=dbConn()
+	if (r.Method == "POST"){
+		
+		Name:= r.FormValue("name")
+		Recepie:=r.FormValue("Recepie")
+		Weather :=r.FormValue("Weather")
+	
+	insForm, err := db.Prepare("INSERT INTO coffee (Name ,Recepie ,Weather) VALUES(?,?,?)")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	insForm.Exec(Name, Recepie, Weather)
+	}
+	
+	defer db.Close()
+	http.Redirect(w, r, "/", 301)
+
+}
+
+

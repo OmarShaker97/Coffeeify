@@ -103,7 +103,8 @@ func New(w http.ResponseWriter, r *http.Request) {
 
 func InsertDrinks(w http.ResponseWriter, r *http.Request){
 	db :=dbConn()
-	if (r.Method == "Post"){
+	if (r.Method == "POST"){
+		
 		Name:= r.FormValue("name")
 		Recepie:=r.FormValue("Recepie")
 		Weather :=r.FormValue("Weather")

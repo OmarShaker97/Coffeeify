@@ -2,17 +2,18 @@
   {{ template "Header" }}
     {{ template "Menu" }} 
    <h2>New Coffee Recepie</h2>  
-    <form method="POST" action="InsertDrinks">
+    <form method="POST" action="/insert">
 
       <label>Drink's Name:</label><input type="text" name="name" /><br />
        <label> Recepie:</label><input type="text" name="Recepie"/><br />
       
        <br>
+
       <input type="radio" name="Weather" value="1">Hot<br>
       <input type="radio" name="Weather" value="0">Cold<br>
       <br>
 
-      <input type="submit" value="Save Recepie" />
+      <input type="submit" value="Save Recepie"/>
     </form>
   {{ template "Footer" }}
 {{ end }}

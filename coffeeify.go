@@ -1,15 +1,45 @@
 package main
 
 import (
+	common "Coffeeify/common"
 	"bufio"
 	"fmt"
+	//"html/template"
 	"log"
+	"net/http"
 	"os"
 	// Shortening the import reference name seems to make it a bit easier
 	owm "github.com/briandowns/openweathermap"
+	"github.com/gorilla/mux"
 )
 
+/*func getCity(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("View.html")
+	//fmt.Fprintf(w, "Enter your City Please: ")
+	var s = "Title: Meh Body: Whatever"
+	t.Execute(w, s)
+
+}*/
+var router = mux.NewRouter()
+
 func main() {
+
+	router.HandleFunc("/", common.LoginPageHandler) // GET
+
+	router.HandleFunc("/index", common.IndexPageHandler) // GET
+	router.HandleFunc("/login", common.LoginHandler).Methods("POST")
+
+	router.HandleFunc("/register", common.RegisterPageHandler).Methods("GET")
+	router.HandleFunc("/register", common.RegisterHandler).Methods("POST")
+
+	router.HandleFunc("/logout", common.LogoutHandler).Methods("POST")
+
+	http.Handle("/", router)
+
+	http.ListenAndServe(":8000", nil)
+
+	//router.HandleFunc("/weather", getCity).Methods("GET")
+
 	w, err := owm.NewCurrent("C", "EN", "9590c142477f0f4ab7b35ec14cf9a446") // celsius (imperial) with English output
 	if err != nil {
 		log.Fatalln(err)
@@ -18,7 +48,6 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter City: ")
 	city, _ := reader.ReadString('\n')
-	//fmt.Println(city)
 
 	w.CurrentByName(city)
 	fmt.Print("Weather: ")

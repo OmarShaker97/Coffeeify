@@ -7,6 +7,18 @@
 			"path": "github.com/briandowns/openweathermap",
 			"revision": "5f41b7c9d92de5d74bf32f4486375c7547bc8a3c",
 			"revisionTime": "2018-08-04T15:59:45Z"
+		},
+		{
+			"checksumSHA1": "kJXWK9r2PT3f0mvfFhbtCdQx8tE=",
+			"path": "github.com/gorilla/mux",
+			"revision": "3d80bc801bb034e17cae38591335b3b1110f1c47",
+			"revisionTime": "2018-10-30T15:25:28Z"
+		},
+		{
+			"checksumSHA1": "tf+bn/G8sfZq35Bv0ulW/4tbRsE=",
+			"path": "github.com/gorilla/securecookie",
+			"revision": "e65cf8c5df817c89aeb47ecb46064e802e2de943",
+			"revisionTime": "2018-10-10T17:46:47Z"
 		}
 	],
 	"rootPath": "Coffeeify"

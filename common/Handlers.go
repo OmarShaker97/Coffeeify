@@ -246,7 +246,6 @@ func RecommendDrinksPageHandler(response http.ResponseWriter, request *http.Requ
 func RecommendDrinks(response http.ResponseWriter, request *http.Request){
 
     db := dbConn()
-    fmt.Fprintln(response,"here")
     city := request.FormValue("city")
 
     //http.Redirect(response, request, redirectTarget, 302)

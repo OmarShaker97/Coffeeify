@@ -25,8 +25,8 @@ import (
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
     dbUser := "root"
-    dbPass := "password@tcp(localhost:8000)"
-    dbName := "coffee_db"
+    dbPass := "123@tcp(db:3306)"
+   dbName := "coffee"
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"/"+dbName)
     if err != nil {
         panic(err.Error())
@@ -34,7 +34,7 @@ func dbConn() (db *sql.DB) {
 	return db
 }
 func CreateTabbles(){
-	db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/coffee_db")
+	db, err := sql.Open("mysql", "root:123@tcp(db:3306)/coffee")
 	if err != nil{
 		log.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func CreateTabbles(){
 	// 	panic(err)
 	// }
  
-	_,err = db.Exec("USE coffee_db")
+	_,err = db.Exec("USE coffee")
 	if err != nil {
 		panic(err)
 	}
@@ -87,7 +87,7 @@ func main() {
 
 	http.Handle("/", router)
 
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":3000", nil)
 
 	//router.HandleFunc("/weather", getCity).Methods("GET")
 

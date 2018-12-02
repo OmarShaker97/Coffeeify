@@ -16,13 +16,8 @@ import (
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
     dbUser := "root"
-<<<<<<< Updated upstream
-    dbPass := "password@tcp(localhost:8000)"
-    dbName := "coffee_db"
-=======
     dbPass := "password@tcp(localhost:3306)"
     dbName := "coffee"
->>>>>>> Stashed changes
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"/"+dbName)
     if err != nil {
         panic(err.Error())

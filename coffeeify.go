@@ -25,8 +25,13 @@ import (
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
     dbUser := "root"
+<<<<<<< Updated upstream
     dbPass := "password@tcp(localhost:8000)"
     dbName := "coffee_db"
+=======
+    dbPass := "password@tcp(localhost:3306)"
+   dbName := "coffee"
+>>>>>>> Stashed changes
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"/"+dbName)
     if err != nil {
         panic(err.Error())
@@ -34,7 +39,11 @@ func dbConn() (db *sql.DB) {
 	return db
 }
 func CreateTabbles(){
+<<<<<<< Updated upstream
 	db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/coffee_db")
+=======
+	db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/coffee")
+>>>>>>> Stashed changes
 	if err != nil{
 		log.Fatal(err)
 	}
@@ -69,7 +78,7 @@ func CreateTabbles(){
 var router = mux.NewRouter()
 
 func main() {
-	CreateTabbles()
+	//CreateTabbles()
 	router.HandleFunc("/", common.LoginPageHandler) // GET
 
 	router.HandleFunc("/index", common.IndexPageHandler) // GET
@@ -84,6 +93,8 @@ func main() {
 	router.HandleFunc("/show", common.DisplayRecepie)
 	router.HandleFunc("/new", common.New)
 	router.HandleFunc("/insert", common.InsertDrinks)
+	router.HandleFunc("/recommendDrink",common.RecommendDrinksPageHandler).Methods("GET")
+	router.HandleFunc("/recommendDrink", common.RecommendDrinks).Methods("POST")
 
 	http.Handle("/", router)
 

@@ -3,6 +3,7 @@ package handlers
 import (
     helpers "Coffeeify/helpers"
     "fmt"
+    "os"
     "github.com/gorilla/securecookie"
     "html/template"
     "net/http"
@@ -11,12 +12,11 @@ import (
 	"database/sql"
 )
 
-
 func dbConn() (db *sql.DB) {
-    dbDriver := "mysql"
-    dbUser := "root"
-    dbPass := "password@tcp(db:3306)"
-    dbName := "coffee"
+	dbDriver := "mysql"
+	dbUser := os.Getenv("MYSQL_USER")
+	dbPass := os.Getenv("MYSQL_ROOT_PASSWORD")+"@tcp(db:3306)"
+	dbName := os.Getenv("MYSQL_DATABASE")
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"/"+dbName)
     if err != nil {
         panic(err.Error())
@@ -65,9 +65,6 @@ func LoginHandler(response http.ResponseWriter, request *http.Request) {
             count++
             selDb.Scan()
         }
-
-       // _userIsValid := repos.UserIsValid(name, pass)
-
         if count > 0 {
             SetCookie(name, response)
             redirectTarget = "/displayAll"
@@ -106,10 +103,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
     _confirmPwd = !helpers.IsEmpty(confirmPwd)
 
     if _uName && _email && _pwd && _confirmPwd {
-       // fmt.Fprintln(w, "Username for Register : ", uName)
-       // fmt.Fprintln(w, "Email for Register : ", email)
-       // fmt.Fprintln(w, "Password for Register : ", pwd)
-       // fmt.Fprintln(w, "ConfirmPassword for Register : ", confirmPwd)
         insForm, err := db.Prepare("INSERT INTO Users(Username,Password) VALUES(?,?)")
         
         if err != nil {
@@ -120,7 +113,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
         redirectTarget = "/displayAll"
 
         } else {
-        // fmt.Fprintln(w, "This fields can not be blank!")
         redirectTarget = "/register"
         }
         

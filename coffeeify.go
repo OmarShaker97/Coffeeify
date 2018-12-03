@@ -16,9 +16,9 @@ import (
 
 func dbConn() (db *sql.DB) {
 	dbDriver := "mysql"
-	dbUser := "root"
-	dbPass := "password@tcp(db:3306)"
-	dbName := "coffee"
+	dbUser := os.Getenv("MYSQL_USER")
+	dbPass := os.Getenv("MYSQL_ROOT_PASSWORD")+"@tcp(db:3306)"
+	dbName := os.Getenv("MYSQL_DATABASE")
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"/"+dbName)
     if err != nil {
         panic(err.Error())
@@ -26,7 +26,7 @@ func dbConn() (db *sql.DB) {
 	return db
 }
 func CreateTabbles(){
-	db, err := sql.Open("mysql", "root:password@tcp(db:3306)/coffee")
+	db, err := sql.Open("mysql", os.Getenv("MYSQL_USER")+":"+os.Getenv("MYSQL_ROOT_PASSWORD")+"@tcp(db:3306)/"+os.Getenv("MYSQL_DATABASE"))
 	if err != nil{
 		log.Fatal(err)
 	}

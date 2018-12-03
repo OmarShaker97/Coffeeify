@@ -8,6 +8,10 @@ services:
  
     ports:
       - 3000:3000
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: root
+      MYSQL_DATABASE: coffee
     depends_on:
       
       db:

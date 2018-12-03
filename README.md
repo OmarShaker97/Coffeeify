@@ -38,9 +38,9 @@ If you need change some source you can deploy it typing:
 Run the following command first in order to setup the database.
 ``` ```
 
-## Config
+## Configuration
 
-Envirnoment variables were used. If you'd like to change the database name, username, and password. You can do so by changing it in the docker-compose.yml file.
+Envirnoment variables were used to define the database name, username, and password as well as the api settings, including the scale used to display the temperature, the language and the key . The variables could be found in the docker-compose.yml file.
 
 
 ## Docker

@@ -33,6 +33,9 @@ If you need change some source you can deploy it typing:
 
 ```govendor build .```
 
+### Config
+The application uses environment variables to set the Database username, the Database password and the database name defined in the docker-compose.yml file set to root,password and coffee respectively and further used in the main go file of the application Coffeeify.go .
+
 ### Database
 Run the following command first in order to setup the database.
 ``` ```

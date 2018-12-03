@@ -5,24 +5,20 @@ import (
 	//"html/template"
 	"log"
 	"net/http"
+	"os"
+	"fmt"
 	// Shortening the import reference name seems to make it a bit easier
 	"github.com/gorilla/mux"
 	_"github.com/go-sql-driver/mysql"
 	"database/sql"
 )
 
-/*func getCity(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("View.html")
-	//fmt.Fprintf(w, "Enter your City Please: ")
-	var s = "Title: Meh Body: Whatever"
-	t.Execute(w, s)
 
-}*/
 func dbConn() (db *sql.DB) {
-    dbDriver := "mysql"
-    dbUser := "root"
-    dbPass := "password@tcp(localhost:3306)"
-   dbName := "coffee"
+	dbDriver := "mysql"
+	dbUser := "root"
+	dbPass := "password@tcp(db:3306)"
+	dbName := "coffee"
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"/"+dbName)
     if err != nil {
         panic(err.Error())
@@ -30,7 +26,7 @@ func dbConn() (db *sql.DB) {
 	return db
 }
 func CreateTabbles(){
-	db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/coffee")
+	db, err := sql.Open("mysql", "root:password@tcp(db:3306)/coffee")
 	if err != nil{
 		log.Fatal(err)
 	}
@@ -41,12 +37,12 @@ func CreateTabbles(){
 
 	defer db.Close()
  
-	// _,err = db.Exec("CREATE DATABASE ")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	//  _,err = db.Exec("CREATE DATABASE coffee")
+	//  if err != nil {
+	//  	panic(err)
+	//  }
  
-	_,err = db.Exec("USE coffee_db")
+	_,err = db.Exec("USE coffee")
 	if err != nil {
 		panic(err)
 	}
@@ -62,10 +58,16 @@ func CreateTabbles(){
 	}
 
 }
+
+
 var router = mux.NewRouter()
 
 func main() {
-	//CreateTabbles()
+	CreateTabbles()
+	
+	fmt.Println(os.Getenv("MYSQL_USER"))
+	fmt.Println(os.Getenv("MYSQL_ROOT_PASSWORD"))
+	
 	router.HandleFunc("/", common.LoginPageHandler) // GET
 
 	router.HandleFunc("/index", common.IndexPageHandler) // GET

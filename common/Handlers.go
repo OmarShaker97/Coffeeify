@@ -2,7 +2,6 @@ package handlers
 
 import (
     helpers "Coffeeify/helpers"
- //   repos "Coffeeify/repos"
     "fmt"
     "github.com/gorilla/securecookie"
     "html/template"
@@ -16,7 +15,7 @@ import (
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
     dbUser := "root"
-    dbPass := "password@tcp(localhost:3306)"
+    dbPass := "password@tcp(db:3306)"
     dbName := "coffee"
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"/"+dbName)
     if err != nil {

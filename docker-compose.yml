@@ -7,7 +7,7 @@ services:
       DATABASE_NAME: coffee
  
     ports:
-      - 3000:8080
+      - 3000:3000
     depends_on:
       db:
         condition: service_healthy
@@ -16,6 +16,7 @@ services:
     image: healthcheck/mysql:latest
     ports:
       - 3306:3306
+      - 33060:33060
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: root

@@ -2,7 +2,7 @@ package handlers
 
 import (
     helpers "Coffeeify/helpers"
-    repos "Coffeeify/repos"
+ //   repos "Coffeeify/repos"
     "fmt"
     "github.com/gorilla/securecookie"
     "html/template"
@@ -48,23 +48,39 @@ func LoginPageHandler(response http.ResponseWriter, request *http.Request) {
 
 // for POST
 func LoginHandler(response http.ResponseWriter, request *http.Request) {
+    db := dbConn()
     name := request.FormValue("name")
     pass := request.FormValue("password")
 
     redirectTarget := "/"
     if !helpers.IsEmpty(name) && !helpers.IsEmpty(pass) {
         // Database check for user data!
-        _userIsValid := repos.UserIsValid(name, pass)
+        var count = 0
 
-        if _userIsValid {
+        selDb, err := db.Query("SELECT * FROM Users where Username = ? AND Password = ?", name, pass)
+
+        if(err!=nil){
+            panic(err.Error())
+        }
+        for selDb.Next(){
+            count++
+            selDb.Scan()
+        }
+
+       // _userIsValid := repos.UserIsValid(name, pass)
+
+        if count > 0 {
             SetCookie(name, response)
-            redirectTarget = "/index"
+            redirectTarget = "/displayAll"
 
         } else {
             redirectTarget = "/register"
 
         }
     }
+
+    defer db.Close()
+
     http.Redirect(response, request, redirectTarget, 302)
 }
 
@@ -76,8 +92,9 @@ func RegisterPageHandler(response http.ResponseWriter, request *http.Request) {
 
 // for POST
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
+    db :=dbConn()
     r.ParseForm()
-
+    redirectTarget := "/"
     uName := r.FormValue("username")
     email := r.FormValue("email")
     pwd := r.FormValue("password")
@@ -90,14 +107,31 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
     _confirmPwd = !helpers.IsEmpty(confirmPwd)
 
     if _uName && _email && _pwd && _confirmPwd {
-        fmt.Fprintln(w, "Username for Register : ", uName)
-        fmt.Fprintln(w, "Email for Register : ", email)
-        fmt.Fprintln(w, "Password for Register : ", pwd)
-        fmt.Fprintln(w, "ConfirmPassword for Register : ", confirmPwd)
-    } else {
-        fmt.Fprintln(w, "This fields can not be blank!")
+       // fmt.Fprintln(w, "Username for Register : ", uName)
+       // fmt.Fprintln(w, "Email for Register : ", email)
+       // fmt.Fprintln(w, "Password for Register : ", pwd)
+       // fmt.Fprintln(w, "ConfirmPassword for Register : ", confirmPwd)
+        insForm, err := db.Prepare("INSERT INTO Users(Username,Password) VALUES(?,?)")
+        
+        if err != nil {
+            panic(err.Error())
+        }
+    
+        insForm.Exec(uName,pwd)
+        redirectTarget = "/displayAll"
+
+        } else {
+        // fmt.Fprintln(w, "This fields can not be blank!")
+        redirectTarget = "/register"
+        }
+        
+        defer db.Close()
+
+        http.Redirect(w, r, redirectTarget, 302)
     }
-}
+   
+
+
 
 // for GET
 func IndexPageHandler(response http.ResponseWriter, request *http.Request) {

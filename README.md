@@ -1,6 +1,6 @@
 # Coffeeify
 
-### Overview
+#Overview
 The main aim behind our application is to recommend a coffee drink to the users according to the current weather in their city. Our application aims
 to enhance the coffee experience users coffee experience. At the same time the user is able to view different coffee recepies that were posted by different users.
 
@@ -13,17 +13,17 @@ Services Offered:
 
 Note: This applicaion is written in GoLang and the two backing services used are MYSQL and OpenWeather API
 
-## Getting Started
+#Getting Started
 
-### Requirements 
+#Requirements 
 .Docker 17.09.0-ce
 .Docker-Compose 2.1
 
-### Installing
+#Installing
 
 ```git clone https://github.com/OmarShaker97/Coffeeify.git```
 
-### Dependencies
+#Dependencies
 
 Dependencies that were declared and isolated in our web-application was openweathermap, gorilla mux, securecookie, and mysql.
 
@@ -33,22 +33,19 @@ If you need change some source you can deploy it typing:
 
 ```govendor build .```
 
-### Config
-The application uses environment variables to set the Database username, the Database password and the database name defined in the docker-compose.yml file set to root,password and coffee respectively and further used in the main go file of the application Coffeeify.go .
-
-### Database
+#Database
 Run the following command first in order to setup the database.
 ``` ```
 
-### Starting Services
+#Starting Services
 
 ```docker-compose up -d --build```
 
-### Stopping Services
+#Stopping Services
 
 ```docker-compose down```
 
-### Include new changes
+#Include new changes
 
 If you need change some source you can deploy it typing:
 

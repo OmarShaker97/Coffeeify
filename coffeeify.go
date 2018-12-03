@@ -2,12 +2,10 @@ package main
 
 import (
 	common "Coffeeify/common"
-	//"html/template"
 	"log"
 	"net/http"
 	"os"
 	"fmt"
-	// Shortening the import reference name seems to make it a bit easier
 	"github.com/gorilla/mux"
 	_"github.com/go-sql-driver/mysql"
 	"database/sql"

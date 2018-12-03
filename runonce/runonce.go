@@ -56,6 +56,6 @@ func CreateTables(){
 
 }
 func main(){
-	CreateDB()
+	//CreateDB()
 	CreateTables()
 }

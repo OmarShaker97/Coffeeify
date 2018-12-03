@@ -275,7 +275,7 @@ func RecommendDrinks(response http.ResponseWriter, request *http.Request){
 
     //http.Redirect(response, request, redirectTarget, 302)
 
-    w, err := owm.NewCurrent("C", "EN", "9590c142477f0f4ab7b35ec14cf9a446") // celsius (imperial) with English output
+    w, err := owm.NewCurrent(os.Getenv("API_SCALE"), os.Getenv("API_LANG"), os.Getenv("API_KEY")) // celsius (imperial) with English output
 	if err != nil {
 		fmt.Print(err)
 	}

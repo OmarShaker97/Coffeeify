@@ -9,6 +9,9 @@ services:
     ports:
       - 3000:3000
     environment:
+      API_LANG: EN
+      API_SCALE: C 
+      API_KEY: 9590c142477f0f4ab7b35ec14cf9a446
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: root
       MYSQL_DATABASE: coffee
